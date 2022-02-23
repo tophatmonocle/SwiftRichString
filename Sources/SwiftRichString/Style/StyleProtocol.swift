@@ -37,6 +37,9 @@ public protocol StyleProtocol: class {
 	/// Return the attributes of the style in form of dictionary `NSAttributedStringKey`/`Any`.
 	var attributes: [NSAttributedString.Key : Any] { get }
 	
+    /// Return the attributes of the style in form of dictionary `NSAttributedStringKey`/`Any`.
+    var attributesWithoutFonts: [NSAttributedString.Key : Any] { get }
+    
 	/// Font unique attributes dictionary.
 	var fontData: FontData? { get }
     
@@ -64,7 +67,7 @@ public extension StyleProtocol {
 	
 	func add(to source: AttributedString, range: NSRange?) -> AttributedString {
 		self.fontData?.addAttributes(to: source, range: range)
-		source.addAttributes(self.attributes, range: (range ?? NSMakeRange(0, source.length)))
+		source.addAttributes(self.attributesWithoutFonts, range: (range ?? NSMakeRange(0, source.length)))
         return applyTextTransform(self.textTransforms, to: source)
 	}
 	

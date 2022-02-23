@@ -1,3 +1,5 @@
+<p>This should now be <strong> bold and also <em>italic</em></strong></p>
+
 <strong>Parler du don d'organe n'est plus tabou. Je me renseigne, j'en discute avec mes proches,... <rainbow>et je décide!</rainbow></strong>
 
 <img named="therocket" rect="0,-50,30,30"/>

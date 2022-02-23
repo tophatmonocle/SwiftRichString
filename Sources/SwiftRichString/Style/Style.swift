@@ -628,6 +628,16 @@ public class Style: StyleProtocol {
 //        }
 		return self.cachedAttributes!
 	}
+    
+    /// Return attributes defined by the style.
+    /// Not all attributes are returned, fonts attributes may be omitted.
+    /// Refer to `attributes` to get the complete list.
+    public var attributesWithoutFonts: [NSAttributedString.Key : Any] {
+        if let cachedAttributes = self.cachedAttributes {
+            return cachedAttributes
+        }
+        return self.innerAttributes
+    }
 	
 	/// Create a new style copy of `self` with the opportunity to configure it via configuration callback.
 	///

@@ -41,6 +41,10 @@ public class StyleXML: StyleProtocol {
     
     // The following attributes are ignored for StyleXML because are read from the sub styles.
     public var attributes: [NSAttributedString.Key : Any] = [:]
+    public var attributesWithoutFonts: [NSAttributedString.Key : Any] {
+        return attributes
+    }
+
     public var fontData: FontData? = nil
     public var textTransforms: [TextTransform]? = nil
     

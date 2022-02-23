@@ -54,6 +54,10 @@ public class StyleRegEx: StyleProtocol {
 	public var attributes: [NSAttributedString.Key : Any] {
 		return self.style.attributes
 	}
+    
+    public var attributesWithoutFonts: [NSAttributedString.Key : Any] {
+        return self.style.attributes
+    }
 	
     public var textTransforms: [TextTransform]?
     

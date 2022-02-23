@@ -44,13 +44,18 @@ class ViewController: UIViewController {
 		
         // Create a set of styles
         
+        let pStyle = Style {
+            $0.font = UIFont.systemFont(ofSize: self.baseFontSize)
+        }
+        
 		let headerStyle = Style {
 			$0.font = UIFont.boldSystemFont(ofSize: self.baseFontSize * 1.15)
 			$0.lineSpacing = 1
 			$0.kerning = Kerning.adobe(-20)
 		}
 		let boldStyle = Style {
-			$0.font = UIFont.boldSystemFont(ofSize: self.baseFontSize)
+            $0.font = UIFont.systemFont(ofSize: self.baseFontSize)
+            $0.traitVariants = .bold
             if #available(iOS 11.0, *) {
                 $0.dynamicText = DynamicText {
                     $0.style = .body
@@ -60,8 +65,9 @@ class ViewController: UIViewController {
             }
 		}
 		let italicStyle = Style {
-			$0.font = UIFont.italicSystemFont(ofSize: self.baseFontSize)
-		}
+            $0.font = UIFont.systemFont(ofSize: self.baseFontSize)
+            $0.traitVariants = .italic
+        }
         
         let uppercasedRed = Style {
             $0.font = UIFont.italicSystemFont(ofSize: self.baseFontSize)
@@ -77,6 +83,7 @@ class ViewController: UIViewController {
 			$0.lineSpacing = 2
 			$0.kerning = Kerning.adobe(-15)
 			}, [
+                "p": pStyle,
                 "ur": uppercasedRed,
 				"h3": headerStyle,
 				"h4": headerStyle,
