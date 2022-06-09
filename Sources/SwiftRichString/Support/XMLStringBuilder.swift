@@ -210,27 +210,25 @@ public class XMLStringBuilder: NSObject, XMLParserDelegate {
             if var style = xmlStyle.style {
                 // it's a know style
 
-                // we only apply text transforms to the element where it was defined, and not on any potential children
-                if style.textTransforms?.isEmpty ?? true == false, xmlStyle.tag != tagNamesStack.last, let castedStyle = style as? Style {
-                    style = castedStyle.byAdding {
-                        $0.textTransforms = []
+                if let castedStyle = style as? Style {
+                    
+                    // we only apply text transforms to the element where it was defined, and not on any potential children
+                    if style.textTransforms?.isEmpty == false, xmlStyle.tag != tagNamesStack.last {
+                        style = castedStyle.byAdding {
+                            $0.textTransforms = []
+                        }
                     }
-                }
 
-                if tagNamesStack.count >= 2,
-                    tagNamesStack.last == "li",
-                    tagNamesStack[tagNamesStack.count - 2] == "ol",
-                    xmlStyle.tag == "li",
-                    let castedStyle = style as? Style
-                {
-                    // In this condition we see if we're applying the style into a <li> tag, and the parent is a <ol>
-                    // If thats the case, we modify the textTransform to add the dynamic list item count
-                    style = castedStyle.byAdding {
-                        $0.textTransforms = [
-                            .custom({ text in
-                                "\(self.orderedListItemCounter). \(text)"
-                            })
-                        ]
+                    if tagNamesStack.count >= 2, tagNamesStack.last == "li", tagNamesStack[tagNamesStack.count - 2] == "ol", xmlStyle.tag == "li" {
+                        // In this condition we see if we're applying the style into a <li> tag, and the parent is a <ol>
+                        // If thats the case, we modify the textTransform to add the dynamic list item count
+                        style = castedStyle.byAdding {
+                            $0.textTransforms = [
+                                .custom({ text in
+                                    "\(self.orderedListItemCounter). \(text)"
+                                })
+                            ]
+                        }
                     }
                 }
 
