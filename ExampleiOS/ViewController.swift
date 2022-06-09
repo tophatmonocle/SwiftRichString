@@ -45,13 +45,13 @@ class ViewController: UIViewController {
             <strong>bold test</strong>
             <p>Unordered list</p>
             <ul>
-                <li>item 1</li>
+                <li>item <strong>1</strong></li>
                 <li>item 2</li>
                 <li>item 3</li>
             </ul>
             Ordered list
             <ol>
-                <li>item 1</li>
+                <li>item <strong>1</strong></li>
                 <li>item 2</li>
                 <li>item 3</li>
             </ol>
