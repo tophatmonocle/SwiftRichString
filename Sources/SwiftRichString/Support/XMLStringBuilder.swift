@@ -178,9 +178,14 @@ public class XMLStringBuilder: NSObject, XMLParserDelegate {
             return
         }
         tagNamesStack.append(elementName)
+
         if elementName == "ol" {
             // we need to reset the counter everytime we find an ordered list element
             orderedListItemCounter = 0
+        }
+        else if elementName == "li", tagNamesStack.count >= 2, tagNamesStack[tagNamesStack.count - 2] == "ol" {
+            // it's an item inside an ordered list
+            orderedListItemCounter += 1
         }
 
         if elementName != XMLStringBuilder.topTag {
@@ -200,31 +205,34 @@ public class XMLStringBuilder: NSObject, XMLParserDelegate {
        */
         var newAttributedString = AttributedString(string: currentString ?? "")
 
-        var isOrderedListItem = false
-        if tagNamesStack.count >= 2, tagNamesStack.last == "li", tagNamesStack[tagNamesStack.count - 2] == "ol" {
-            // it's an item inside an ordered list
-            orderedListItemCounter += 1
-            isOrderedListItem = true
-        }
-
         for xmlStyle in xmlStylers {
             // Apply
-            if let style = xmlStyle.style {
+            if var style = xmlStyle.style {
                 // it's a know style
 
-                if isOrderedListItem, xmlStyle.tag == "li", let style = style as? Style {
-                    // In this condition we see if we're applying the style into a <li> tag, and the parent is a <ol>
-                    // If thats the case, we modify the textTransform to add the dynamic list item count
-                    let modifiedStyle = Style(style: style)
-                    modifiedStyle.textTransforms = [
-                        .custom({ text in
-                            "\(self.orderedListItemCounter). \(text)"
-                        })
-                    ]
-                    newAttributedString = newAttributedString.add(style: modifiedStyle)
-                } else {
-                    newAttributedString = newAttributedString.add(style: style)
+                if let castedStyle = style as? Style {
+                    
+                    // we only apply text transforms to the element where it was defined, and not on any potential children
+                    if style.textTransforms?.isEmpty == false, xmlStyle.tag != tagNamesStack.last {
+                        style = castedStyle.byAdding {
+                            $0.textTransforms = []
+                        }
+                    }
+
+                    if tagNamesStack.count >= 2, tagNamesStack.last == "li", tagNamesStack[tagNamesStack.count - 2] == "ol", xmlStyle.tag == "li" {
+                        // In this condition we see if we're applying the style into a <li> tag, and the parent is a <ol>
+                        // If thats the case, we modify the textTransform to add the dynamic list item count
+                        style = castedStyle.byAdding {
+                            $0.textTransforms = [
+                                .custom({ text in
+                                    "\(self.orderedListItemCounter). \(text)"
+                                })
+                            ]
+                        }
+                    }
                 }
+
+                newAttributedString = newAttributedString.add(style: style)
 
                 // Also apply the xml attributes if needed
                 if xmlStyle.xmlAttributes != nil {
