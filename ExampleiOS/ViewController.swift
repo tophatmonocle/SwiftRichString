@@ -41,12 +41,13 @@ class ViewController: UIViewController {
 //        return
 //
 		//let bodyHTML = try! String(contentsOfFile: Bundle.main.path(forResource: "file", ofType: "txt")!)
+
         let bodyHTML = """
             <strong>bold test</strong>
             <p>Unordered list</p>
             <ul>
                 <li>item <strong>1</strong></li>
-                <li>item 2</li>
+                <li><strong>item 2</strong></li>
                 <li>item 3</li>
             </ul>
             Ordered list

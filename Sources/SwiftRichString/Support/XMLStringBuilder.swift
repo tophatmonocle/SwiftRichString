@@ -108,8 +108,9 @@ public class XMLStringBuilder: NSObject, XMLParserDelegate {
     // Tag names stack, used to keep track of the context (e.g parent) of the current tag
     private var tagNamesStack = [String]()
 
-    // Ordered lists item counter
+    // Ordered lists stuff
     private var orderedListItemCounter = 0
+    private var listItemBulletAdded = false
 
     // MARK: - Initialization
 
@@ -170,7 +171,7 @@ public class XMLStringBuilder: NSObject, XMLParserDelegate {
     @objc public func parser(_ parser: XMLParser, foundCharacters string: String) {
         currentString = (currentString ?? "").appending(string)
     }
-    
+
     // MARK: Support Private Methods
     
     func enter(element elementName: String, attributes: [String: String]) {
@@ -183,9 +184,13 @@ public class XMLStringBuilder: NSObject, XMLParserDelegate {
             // we need to reset the counter everytime we find an ordered list element
             orderedListItemCounter = 0
         }
-        else if elementName == "li", tagNamesStack.count >= 2, tagNamesStack[tagNamesStack.count - 2] == "ol" {
-            // it's an item inside an ordered list
-            orderedListItemCounter += 1
+
+        if elementName == "li" {
+            listItemBulletAdded = false
+            if tagNamesStack.count >= 2, tagNamesStack[tagNamesStack.count - 2] == "ol" {
+                // it's an item inside an ordered list
+                orderedListItemCounter += 1
+            }
         }
 
         if elementName != XMLStringBuilder.topTag {
@@ -211,11 +216,15 @@ public class XMLStringBuilder: NSObject, XMLParserDelegate {
                 // it's a know style
 
                 if let castedStyle = style as? Style {
-                    
+
                     // we only apply text transforms to the element where it was defined, and not on any potential children
-                    if style.textTransforms?.isEmpty == false, xmlStyle.tag != tagNamesStack.last {
-                        style = castedStyle.byAdding {
-                            $0.textTransforms = []
+                    if style.textTransforms?.isEmpty == false {
+                        if xmlStyle.tag != tagNamesStack.last, listItemBulletAdded {
+                            style = castedStyle.byAdding {
+                                $0.textTransforms = []
+                            }
+                        } else if currentString?.isEmpty == false {
+                            listItemBulletAdded = true
                         }
                     }
 
