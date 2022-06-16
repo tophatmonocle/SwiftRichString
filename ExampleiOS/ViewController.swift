@@ -43,42 +43,33 @@ class ViewController: UIViewController {
 		//let bodyHTML = try! String(contentsOfFile: Bundle.main.path(forResource: "file", ofType: "txt")!)
 
         let bodyHTML = """
+            <strong>bold test</strong>
+            <p>Unordered list</p>
+            <ul>
+                <li>item <strong>1</strong></li>
+                <li><strong>item 2</strong></li>
+                <li>item 3</li>
+            </ul>
             Ordered list
             <ol>
-                <li>Look <strong>item 2</strong></li>
+                <li>item <strong>1</strong></li>
                 <li><strong>item 2</strong></li>
-                <li><strong>item 2</strong> bla</li>
+                <li>item 3</li>
+                <li><strong>item 4</strong> after</li>
+            </ol>
+            <p>Back to unordered list</p>
+            <ul>
+                <li>item 1</li>
+                <li>item 2</li>
+                <li>item 3</li>
+            </ul>
+            Back to Ordered list
+            <ol>
+                <li>item 1</li>
+                <li>item 2</li>
                 <li>item 3</li>
             </ol>
         """
-
-//        let bodyHTML = """
-//            <strong>bold test</strong>
-//            <p>Unordered list</p>
-//            <ul>
-//                <li>item <strong>1</strong></li>
-//                <li><strong>item 2</strong></li>
-//                <li>item 3</li>
-//            </ul>
-//            Ordered list
-//            <ol>
-//                <li>item <strong>1</strong></li>
-//                <li><strong>item 2</strong></li>
-//                <li>item 3</li>
-//            </ol>
-//            <p>Back to unordered list</p>
-//            <ul>
-//                <li>item 1</li>
-//                <li>item 2</li>
-//                <li>item 3</li>
-//            </ul>
-//            Back to Ordered list
-//            <ol>
-//                <li>item 1</li>
-//                <li>item 2</li>
-//                <li>item 3</li>
-//            </ol>
-//        """
 
 
         // Create a set of styles
@@ -125,16 +116,11 @@ class ViewController: UIViewController {
 				"em": italicStyle,
 				"i": italicStyle,
                 "a": uppercasedRed,
-				"li": Style {
-					$0.paragraphSpacingBefore = self.baseFontSize / 2
-					$0.firstLineHeadIndent = self.baseFontSize
-					$0.headIndent = self.baseFontSize * 1.71
-                    $0.textTransforms = [
-                        .custom {
-                            "- \($0)"
-                        }
-                    ]
-				},
+                "li": Style {
+                    $0.paragraphSpacingBefore = self.baseFontSize / 2
+                    $0.firstLineHeadIndent = self.baseFontSize
+                    $0.headIndent = self.baseFontSize * 1.71
+                },
 				"sup": Style {
 					$0.font = UIFont.systemFont(ofSize: self.baseFontSize / 1.2)
 					$0.baselineOffset = Float(self.baseFontSize) / 3.5

@@ -110,7 +110,6 @@ public class XMLStringBuilder: NSObject, XMLParserDelegate {
 
     // Ordered lists stuff
     private var orderedListItemCounter = 0
-    private var listItemBulletAdded = false
     private var isOrderedList = false
 
     // MARK: - Initialization
@@ -188,10 +187,11 @@ public class XMLStringBuilder: NSObject, XMLParserDelegate {
         } else if elementName == "ul" {
             isOrderedList = false
         } else if elementName == "li" {
-            listItemBulletAdded = false
-            if tagNamesStack.count >= 2, tagNamesStack[tagNamesStack.count - 2] == "ol" {
-                // it's an item inside an ordered list
+            if isOrderedList {
                 orderedListItemCounter += 1
+                currentString = "\(self.orderedListItemCounter). "
+            } else {
+                currentString = " - "
             }
         }
 
@@ -215,39 +215,6 @@ public class XMLStringBuilder: NSObject, XMLParserDelegate {
         for xmlStyle in xmlStylers {
             // Apply
             if var style = xmlStyle.style {
-                // it's a know style
-
-                if let castedStyle = style as? Style {
-                    if isOrderedList {
-                        if listItemBulletAdded {
-                            style = castedStyle.byAdding {
-                                $0.textTransforms = []
-                            }
-                        } else if listItemBulletAdded == false, currentString != nil, xmlStyle.tag == "li" {
-                            // In this condition we see if we're applying the style into a <li> tag, and the parent is a <ol>
-                            // If thats the case, we modify the textTransform to add the dynamic list item count
-                            listItemBulletAdded = true
-                            style = castedStyle.byAdding {
-                                $0.textTransforms = [
-                                    .custom({ text in
-                                        "\(self.orderedListItemCounter). \(text)"
-                                    })
-                                ]
-                            }
-                        }
-                    } else {
-                        // we only apply text transforms to the element where it was defined, and not on any potential children
-                        if style.textTransforms?.isEmpty == false {
-                            if xmlStyle.tag != tagNamesStack.last, listItemBulletAdded {
-                                style = castedStyle.byAdding {
-                                    $0.textTransforms = []
-                                }
-                            } else if currentString?.isEmpty == false {
-                                listItemBulletAdded = true
-                            }
-                        }
-                    }
-                }
 
                 newAttributedString = newAttributedString.add(style: style)
 
