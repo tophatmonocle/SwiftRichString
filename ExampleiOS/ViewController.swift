@@ -43,32 +43,42 @@ class ViewController: UIViewController {
 		//let bodyHTML = try! String(contentsOfFile: Bundle.main.path(forResource: "file", ofType: "txt")!)
 
         let bodyHTML = """
-            <strong>bold test</strong>
-            <p>Unordered list</p>
-            <ul>
-                <li>item <strong>1</strong></li>
-                <li><strong>item 2</strong></li>
-                <li>item 3</li>
-            </ul>
             Ordered list
             <ol>
-                <li>item <strong>1</strong></li>
-                <li>item 2</li>
-                <li>item 3</li>
-            </ol>
-            <p>Back to unordered list</p>
-            <ul>
-                <li>item 1</li>
-                <li>item 2</li>
-                <li>item 3</li>
-            </ul>
-            Back to Ordered list
-            <ol>
-                <li>item 1</li>
-                <li>item 2</li>
+                <li>Look <strong>item 2</strong></li>
+                <li><strong>item 2</strong></li>
+                <li><strong>item 2</strong> bla</li>
                 <li>item 3</li>
             </ol>
         """
+
+//        let bodyHTML = """
+//            <strong>bold test</strong>
+//            <p>Unordered list</p>
+//            <ul>
+//                <li>item <strong>1</strong></li>
+//                <li><strong>item 2</strong></li>
+//                <li>item 3</li>
+//            </ul>
+//            Ordered list
+//            <ol>
+//                <li>item <strong>1</strong></li>
+//                <li><strong>item 2</strong></li>
+//                <li>item 3</li>
+//            </ol>
+//            <p>Back to unordered list</p>
+//            <ul>
+//                <li>item 1</li>
+//                <li>item 2</li>
+//                <li>item 3</li>
+//            </ul>
+//            Back to Ordered list
+//            <ol>
+//                <li>item 1</li>
+//                <li>item 2</li>
+//                <li>item 3</li>
+//            </ol>
+//        """
 
 
         // Create a set of styles
