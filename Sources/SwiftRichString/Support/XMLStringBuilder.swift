@@ -180,7 +180,6 @@ public class XMLStringBuilder: NSObject, XMLParserDelegate {
             return
         }
         tagNamesStack.append(elementName)
-        print("enter \(elementName)")
 
         if elementName == "ol" {
             // we need to reset the counter everytime we find an ordered list element
@@ -189,7 +188,6 @@ public class XMLStringBuilder: NSObject, XMLParserDelegate {
         } else if elementName == "ul" {
             isOrderedList = false
         } else if elementName == "li" {
-            print("setting listItemBulletAdded to false")
             listItemBulletAdded = false
             if tagNamesStack.count >= 2, tagNamesStack[tagNamesStack.count - 2] == "ol" {
                 // it's an item inside an ordered list
@@ -220,36 +218,14 @@ public class XMLStringBuilder: NSObject, XMLParserDelegate {
                 // it's a know style
 
                 if let castedStyle = style as? Style {
-
-
                     if isOrderedList {
-
-                    } else {
-
-                    }
-
-
-                    // we only apply text transforms to the element where it was defined, and not on any potential children
-                    if style.textTransforms?.isEmpty == false, isOrderedList == false {
-                        if xmlStyle.tag != tagNamesStack.last, listItemBulletAdded {
+                        if listItemBulletAdded {
                             style = castedStyle.byAdding {
                                 $0.textTransforms = []
                             }
-                        } else if currentString?.isEmpty == false {
-                            print("setting bullet added to true")
-                            listItemBulletAdded = true
-                        }
-                    }
-
-                    print("currentString is [\(currentString ?? "DD")]")
-                    let trimmedString = currentString?.trimmingCharacters(in: .whitespacesAndNewlines)
-                    print("trimmedString is [\(trimmedString ?? "DD")]")
-
-                    if isOrderedList {
-                        if listItemBulletAdded == false, currentString != nil, xmlStyle.tag == "li" {
+                        } else if listItemBulletAdded == false, currentString != nil, xmlStyle.tag == "li" {
                             // In this condition we see if we're applying the style into a <li> tag, and the parent is a <ol>
                             // If thats the case, we modify the textTransform to add the dynamic list item count
-                            print("setting bullet added to true[2]")
                             listItemBulletAdded = true
                             style = castedStyle.byAdding {
                                 $0.textTransforms = [
@@ -258,9 +234,16 @@ public class XMLStringBuilder: NSObject, XMLParserDelegate {
                                     })
                                 ]
                             }
-                        } else if listItemBulletAdded {
-                            style = castedStyle.byAdding {
-                                $0.textTransforms = []
+                        }
+                    } else {
+                        // we only apply text transforms to the element where it was defined, and not on any potential children
+                        if style.textTransforms?.isEmpty == false {
+                            if xmlStyle.tag != tagNamesStack.last, listItemBulletAdded {
+                                style = castedStyle.byAdding {
+                                    $0.textTransforms = []
+                                }
+                            } else if currentString?.isEmpty == false {
+                                listItemBulletAdded = true
                             }
                         }
                     }
