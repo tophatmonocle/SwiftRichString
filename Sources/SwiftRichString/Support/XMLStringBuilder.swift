@@ -191,7 +191,7 @@ public class XMLStringBuilder: NSObject, XMLParserDelegate {
                 orderedListItemCounter += 1
                 currentString = "\(self.orderedListItemCounter). "
             } else {
-                currentString = " - "
+                currentString = "• "
             }
         }
 
@@ -214,7 +214,7 @@ public class XMLStringBuilder: NSObject, XMLParserDelegate {
 
         for xmlStyle in xmlStylers {
             // Apply
-            if var style = xmlStyle.style {
+            if let style = xmlStyle.style {
 
                 newAttributedString = newAttributedString.add(style: style)
 
