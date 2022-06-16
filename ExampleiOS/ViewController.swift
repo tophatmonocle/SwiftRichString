@@ -53,8 +53,9 @@ class ViewController: UIViewController {
             Ordered list
             <ol>
                 <li>item <strong>1</strong></li>
-                <li>item 2</li>
+                <li><strong>item 2</strong></li>
                 <li>item 3</li>
+                <li><strong>item 4</strong> after</li>
             </ol>
             <p>Back to unordered list</p>
             <ul>
@@ -115,16 +116,11 @@ class ViewController: UIViewController {
 				"em": italicStyle,
 				"i": italicStyle,
                 "a": uppercasedRed,
-				"li": Style {
-					$0.paragraphSpacingBefore = self.baseFontSize / 2
-					$0.firstLineHeadIndent = self.baseFontSize
-					$0.headIndent = self.baseFontSize * 1.71
-                    $0.textTransforms = [
-                        .custom {
-                            "- \($0)"
-                        }
-                    ]
-				},
+                "li": Style {
+                    $0.paragraphSpacingBefore = self.baseFontSize / 2
+                    $0.firstLineHeadIndent = self.baseFontSize
+                    $0.headIndent = self.baseFontSize * 1.71
+                },
 				"sup": Style {
 					$0.font = UIFont.systemFont(ofSize: self.baseFontSize / 1.2)
 					$0.baselineOffset = Float(self.baseFontSize) / 3.5
