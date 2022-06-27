@@ -64,10 +64,10 @@ class ViewController: UIViewController {
                 <li>item 3</li>
             </ul>
             Back to Ordered list
-            <ol>
-                <li>item 1</li>
-                <li>item 2</li>
-                <li>item 3</li>
+            <ol start="5">
+                <li>item 5</li>
+                <li>item 6</li>
+                <li>item 7</li>
             </ol>
         """
 
