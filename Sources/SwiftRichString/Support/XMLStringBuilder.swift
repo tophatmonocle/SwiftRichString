@@ -184,6 +184,11 @@ public class XMLStringBuilder: NSObject, XMLParserDelegate {
             // we need to reset the counter everytime we find an ordered list element
             orderedListItemCounter = 0
             isOrderedList = true
+            if let startString = attributes["start"], let start = Int(startString) {
+                // the order list counter starts at an specified number;
+                // we do a -1 because we always increment at every item
+                orderedListItemCounter = start - 1
+            }
         } else if elementName == "ul" {
             isOrderedList = false
         } else if elementName == "li" {
