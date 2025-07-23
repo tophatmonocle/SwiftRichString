@@ -1,3 +1,5 @@
+[![codecov](https://codecov.io/github/tophatmonocle/SwiftRichString/graph/badge.svg?token=LG5Destas1)](https://codecov.io/github/tophatmonocle/SwiftRichString)
+
 <p align="center" >
   <img src="banner.png" width=300px alt="SwiftLocation" title="SwiftLocation">
 </p>
